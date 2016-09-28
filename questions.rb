@@ -1,24 +1,29 @@
 require_relative 'manifest'
 
-class Questions
+class Questions < ModelBase
   attr_accessor :title, :body, :user_id
-
+  @@table_name = 'questions'
   def self.all
     questions = QuestionsDatabase.instance.execute('SELECT * FROM questions')
     questions.map { |question_data| Questions.new(question_data) }
   end
 
   def self.find_by_id(id)
-    query = QuestionsDatabase.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        questions
-      WHERE
-        id = ?
-    SQL
-    return nil if query.empty?
-    query.map { |query_data| Questions.new(query_data) }
+    super(id, @@table_name)
+    # query = QuestionsDatabase.instance.execute(<<-SQL, id)
+    #   SELECT
+    #     *
+    #   FROM
+    #     questions
+    #   WHERE
+    #     id = ?
+    # SQL
+    # return nil if query.empty?
+    # query.map { |query_data| Questions.new(query_data) }
+  end
+
+  def self.find_where(options)
+    super(@@table_name, options)
   end
 
   def self.most_followed(n)

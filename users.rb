@@ -1,6 +1,6 @@
-class Users
+class Users < ModelBase
   attr_accessor :fname, :lname
-
+  @@table_name = 'users'
   def self.all
     everybody = QuestionsDatabase.instance.execute("SELECT * FROM users")
     everybody.map { |user_data| Users.new(user_data) }
@@ -20,16 +20,24 @@ class Users
   end
 
   def self.find_by_id(id)
-    query = QuestionsDatabase.instance.execute(<<-SQL, id)
-      SELECT
-        *
-      FROM
-        users
-      WHERE
-        id = ?
-    SQL
-    return nil unless query
-    query.map { |query_data| Users.new(query_data) }
+    super(id, @@table_name)
+  end
+
+  # def self.find_by_id(id)
+  #   query = QuestionsDatabase.instance.execute(<<-SQL, id)
+  #     SELECT
+  #       *
+  #     FROM
+  #       users
+  #     WHERE
+  #       id = ?
+  #   SQL
+  #   return nil unless query
+  #   query.map { |query_data| Users.new(query_data) }
+  # end
+
+  def self.find_where(options)
+    super(@@table_name, options)
   end
 
   def self.find_by_reply_id(id)

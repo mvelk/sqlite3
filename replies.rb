@@ -1,9 +1,13 @@
-class Replies
+class Replies < ModelBase
   attr_accessor :question_id, :user_id, :reply_id, :body
-
+  @@table_name = 'replies'
   def self.all
     replyies = QuestionsDatabase.instance.execute("SELECT * FROM replies")
     replyies.map { |reply| Replies.new(reply) }
+  end
+
+  def self.find_by_id(id)
+    super(id, @@table_name)
   end
 
   def self.find_by_user_id(user_id)
@@ -17,6 +21,10 @@ class Replies
     SQL
     return nil unless query
     query.map { |query_data| Replies.new(query_data) }
+  end
+
+  def self.find_where(options)
+    super(@@table_name, options)
   end
 
   def self.find_by_question_id(question_id)

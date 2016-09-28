@@ -1,6 +1,6 @@
-class QuestionFollowers
+class QuestionFollowers < ModelBase
   attr_accessor :question_id, :user_id
-
+  @@table_name = 'questions_followers'
   def self.all
     questions_followers = QuestionsDatabase.instance.execute("SELECT * FROM questions_followers")
     questions_followers.map { |question_follower_data| QuestionFollowers.new(question_follower_data) }

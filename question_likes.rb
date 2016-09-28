@@ -1,4 +1,5 @@
-class QuestionLikes
+class QuestionLikes < ModelBase
+  @@table_name = 'question_likes'
   def self.all
     question_likes = QuestionsDatabase.instance.execute("SELECT * FROM question_likes")
     question_likes.map { |question_like_data| QuestionLikes.new(question_like_data) }

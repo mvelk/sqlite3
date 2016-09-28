@@ -1,3 +1,4 @@
+require_relative 'model_base'
 require_relative 'questions_database'
 require_relative 'question_followers'
 require_relative 'question_likes'
